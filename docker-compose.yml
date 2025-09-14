@@ -1,0 +1,219 @@
+# Docker Compose for Tasawwur RTC Development Environment
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: tasawwur-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tasawwur_rtc_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend-services/rest-api-server/src/main/resources/db/migration:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: tasawwur-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # TURN Server (coturn)
+  turn-server:
+    image: coturn/coturn:latest
+    container_name: tasawwur-turn
+    restart: unless-stopped
+    ports:
+      - "3478:3478/udp"
+      - "3478:3478/tcp"
+      - "49152-65535:49152-65535/udp"
+    environment:
+      - TURN_USERNAME=tasawwur
+      - TURN_PASSWORD=rtc-turn-secret
+    volumes:
+      - ./infra-k8s/configs/turnserver.conf:/etc/coturn/turnserver.conf:ro
+    command: ["turnserver", "-c", "/etc/coturn/turnserver.conf"]
+
+  # REST API Server
+  rest-api-server:
+    build:
+      context: ./backend-services/rest-api-server
+      dockerfile: Dockerfile
+    container_name: tasawwur-rest-api
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DATABASE_URL: jdbc:postgresql://postgres:5432/tasawwur_rtc_dev
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: dev-jwt-secret-change-in-production
+      LOG_LEVEL: DEBUG
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Signaling Server
+  signaling-server:
+    build:
+      context: ./backend-services/signaling-server
+      dockerfile: Dockerfile
+    container_name: tasawwur-signaling
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: dev-jwt-secret-change-in-production
+      LOG_LEVEL: DEBUG
+      AUTH_ENABLED: false
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Dashboard Frontend
+  dashboard:
+    build:
+      context: ./dashboard-frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: tasawwur-dashboard
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8081/api
+      VITE_WS_URL: ws://localhost:8080/ws
+    volumes:
+      - ./dashboard-frontend/src:/app/src
+      - ./dashboard-frontend/public:/app/public
+    depends_on:
+      - rest-api-server
+      - signaling-server
+
+  # Documentation Site
+  docs:
+    build:
+      context: ./docs
+      dockerfile: Dockerfile
+      target: development
+    container_name: tasawwur-docs
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./docs/docs:/app/docs
+      - ./docs/blog:/app/blog
+      - ./docs/src:/app/src
+      - ./docs/static:/app/static
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: tasawwur-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra-k8s/base/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infra-k8s/configs/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - rest-api-server
+      - signaling-server
+      - dashboard
+      - docs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Monitoring Stack
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: tasawwur-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infra-k8s/configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: tasawwur-grafana
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infra-k8s/configs/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./infra-k8s/configs/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    depends_on:
+      - prometheus
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  default:
+    name: tasawwur-rtc-network
+    driver: bridge
