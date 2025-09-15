@@ -385,3 +385,4 @@ public class SignalingWebSocketHandler extends TextWebSocketHandler {
         return userId != null ? userId.toString() : "anonymous-" + session.getId();
     }
 }
+

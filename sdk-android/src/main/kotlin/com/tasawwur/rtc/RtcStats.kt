@@ -412,3 +412,4 @@ enum class VideoStreamType(val nativeValue: Int) {
         }
     }
 }
+

@@ -102,3 +102,4 @@ private:
     bool audio_muted_ = false;
     bool video_enabled_ = true;
 };
+

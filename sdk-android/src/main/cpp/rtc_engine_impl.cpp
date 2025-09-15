@@ -351,3 +351,4 @@ void RtcEngineImpl::InvokeCallback(std::function<void(Callback*)> callback_func)
         }
     }
 }
+

@@ -228,3 +228,4 @@ status:
 	@echo "  Signaling:     ws://localhost:8080/ws"
 	@echo "  Prometheus:    http://localhost:9090"
 	@echo "  Grafana:       http://localhost:3002"
+

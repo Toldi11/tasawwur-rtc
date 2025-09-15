@@ -16,18 +16,18 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 /**
- * Unit tests for HeliosRtcEngine.
+ * Unit tests for TasawwurRtcEngine.
  * 
  * These tests verify the core functionality of the RTC engine API
  * without requiring actual WebRTC connections.
  */
 @RunWith(RobolectricTestRunner::class)
-class HeliosRtcEngineTest {
+class TasawwurRtcEngineTest {
     
     private lateinit var context: Context
-    private lateinit var config: HeliosRtcConfig
-    private lateinit var engine: HeliosRtcEngine
-    private val mockListener = mockk<HeliosRtcListener>(relaxed = true)
+    private lateinit var config: TasawwurRtcConfig
+    private lateinit var engine: TasawwurRtcEngine
+    private val mockListener = mockk<TasawwurRtcListener>(relaxed = true)
     
     @Before
     fun setUp() {
@@ -36,13 +36,13 @@ class HeliosRtcEngineTest {
         every { System.loadLibrary(any()) } returns Unit
         
         context = RuntimeEnvironment.getApplication()
-        config = HeliosRtcConfig.Builder()
+        config = TasawwurRtcConfig.Builder()
             .setAppId("test-app-id")
             .setEnvironment(Environment.DEVELOPMENT)
             .setLoggingEnabled(false) // Disable logging for tests
             .build()
         
-        engine = HeliosRtcEngine.create(context, config)
+        engine = TasawwurRtcEngine.create(context, config)
         engine.setListener(mockListener)
     }
     
@@ -54,12 +54,12 @@ class HeliosRtcEngineTest {
     
     @Test
     fun `create engine with valid config should succeed`() {
-        val testConfig = HeliosRtcConfig.Builder()
+        val testConfig = TasawwurRtcConfig.Builder()
             .setAppId("test-app")
             .setEnvironment(Environment.PRODUCTION)
             .build()
         
-        val testEngine = HeliosRtcEngine.create(context, testConfig)
+        val testEngine = TasawwurRtcEngine.create(context, testConfig)
         
         assertEquals(ConnectionState.DISCONNECTED, testEngine.connectionState)
         assertFalse(testEngine.isInChannel())
@@ -70,7 +70,7 @@ class HeliosRtcEngineTest {
     @Test
     fun `create engine with invalid config should fail`() {
         assertFailsWith<IllegalArgumentException> {
-            HeliosRtcConfig.Builder()
+            TasawwurRtcConfig.Builder()
                 .setAppId("") // Empty app ID should fail
                 .build()
         }
@@ -217,7 +217,7 @@ class HeliosRtcEngineTest {
     
     @Test
     fun `SDK version should be valid`() {
-        val version = HeliosRtcEngine.getSdkVersion()
+        val version = TasawwurRtcEngine.getSdkVersion()
         assertTrue(version.isNotBlank())
         assertTrue(version.matches(Regex("\\d+\\.\\d+\\.\\d+")))
     }
@@ -229,7 +229,7 @@ class HeliosRtcEngineTest {
     
     @Test
     fun `listener can be set and cleared`() {
-        val newListener = mockk<HeliosRtcListener>(relaxed = true)
+        val newListener = mockk<TasawwurRtcListener>(relaxed = true)
         
         engine.setListener(newListener)
         engine.setListener(null)
@@ -247,3 +247,4 @@ class HeliosRtcEngineTest {
         assertTrue(json.isNotBlank())
     }
 }
+

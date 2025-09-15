@@ -7,13 +7,13 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 /**
- * Unit tests for HeliosRtcConfig and related classes.
+ * Unit tests for TasawwurRtcConfig and related classes.
  */
-class HeliosRtcConfigTest {
+class TasawwurRtcConfigTest {
     
     @Test
     fun `builder with minimal config should work`() {
-        val config = HeliosRtcConfig.Builder()
+        val config = TasawwurRtcConfig.Builder()
             .setAppId("test-app-id")
             .build()
         
@@ -36,7 +36,7 @@ class HeliosRtcConfigTest {
             TurnServerConfig("turn:server2.com", "user2", "pass2")
         )
         
-        val config = HeliosRtcConfig.Builder()
+        val config = TasawwurRtcConfig.Builder()
             .setAppId("full-app-id")
             .setEnvironment(Environment.DEVELOPMENT)
             .setLogLevel(LogLevel.DEBUG)
@@ -70,14 +70,14 @@ class HeliosRtcConfigTest {
     @Test
     fun `builder without app ID should fail`() {
         assertFailsWith<IllegalArgumentException> {
-            HeliosRtcConfig.Builder().build()
+            TasawwurRtcConfig.Builder().build()
         }
     }
     
     @Test
     fun `builder with empty app ID should fail`() {
         assertFailsWith<IllegalArgumentException> {
-            HeliosRtcConfig.Builder()
+            TasawwurRtcConfig.Builder()
                 .setAppId("")
                 .build()
         }
@@ -86,7 +86,7 @@ class HeliosRtcConfigTest {
     @Test
     fun `builder with blank app ID should fail`() {
         assertFailsWith<IllegalArgumentException> {
-            HeliosRtcConfig.Builder()
+            TasawwurRtcConfig.Builder()
                 .setAppId("   ")
                 .build()
         }
@@ -95,14 +95,14 @@ class HeliosRtcConfigTest {
     @Test
     fun `builder with invalid timeout should fail`() {
         assertFailsWith<IllegalArgumentException> {
-            HeliosRtcConfig.Builder()
+            TasawwurRtcConfig.Builder()
                 .setAppId("test-app")
                 .setConnectionTimeout(0)
                 .build()
         }
         
         assertFailsWith<IllegalArgumentException> {
-            HeliosRtcConfig.Builder()
+            TasawwurRtcConfig.Builder()
                 .setAppId("test-app")
                 .setConnectionTimeout(-1000)
                 .build()
@@ -111,7 +111,7 @@ class HeliosRtcConfigTest {
     
     @Test
     fun `config should serialize to JSON`() {
-        val config = HeliosRtcConfig.Builder()
+        val config = TasawwurRtcConfig.Builder()
             .setAppId("json-test-app")
             .setEnvironment(Environment.DEVELOPMENT)
             .build()
@@ -126,7 +126,7 @@ class HeliosRtcConfigTest {
     
     @Test
     fun `default STUN servers should be provided`() {
-        val defaultServers = HeliosRtcConfig.defaultStunServers
+        val defaultServers = TasawwurRtcConfig.defaultStunServers
         
         assertTrue(defaultServers.isNotEmpty())
         assertTrue(defaultServers.all { it.startsWith("stun:") })
@@ -177,7 +177,7 @@ class HeliosRtcConfigTest {
     
     @Test
     fun `builder should be reusable`() {
-        val builder = HeliosRtcConfig.Builder()
+        val builder = TasawwurRtcConfig.Builder()
             .setAppId("reusable-app")
             .setEnvironment(Environment.PRODUCTION)
         

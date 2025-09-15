@@ -182,3 +182,4 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: rest-api-server
+

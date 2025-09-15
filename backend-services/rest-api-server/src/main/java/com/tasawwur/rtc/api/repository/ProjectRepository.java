@@ -281,3 +281,4 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
            "p.createdAt < :cutoffDate")
     int deleteUnusedDisabledProjects(@Param("cutoffDate") Instant cutoffDate);
 }
+

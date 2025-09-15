@@ -208,7 +208,7 @@ JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* vm, void* reserved) {
 
 // Create RTC Engine
 JNIEXPORT jlong JNICALL
-Java_com_tasawwur_rtc_HeliosRtcEngine_nativeCreateEngine(JNIEnv* env, jobject thiz, jstring config_json) {
+Java_com_tasawwur_rtc_TasawwurRtcEngine_nativeCreateEngine(JNIEnv* env, jobject thiz, jstring config_json) {
     LOGI("Creating native RTC engine");
     
     try {
@@ -244,7 +244,7 @@ Java_com_tasawwur_rtc_HeliosRtcEngine_nativeCreateEngine(JNIEnv* env, jobject th
 
 // Destroy RTC Engine
 JNIEXPORT void JNICALL
-Java_com_tasawwur_rtc_HeliosRtcEngine_nativeDestroyEngine(JNIEnv* env, jobject thiz, jlong handle) {
+Java_com_tasawwur_rtc_TasawwurRtcEngine_nativeDestroyEngine(JNIEnv* env, jobject thiz, jlong handle) {
     LOGI("Destroying native RTC engine with handle: %lld", handle);
     
     std::lock_guard<std::mutex> lock(g_engines_mutex);
@@ -259,7 +259,7 @@ Java_com_tasawwur_rtc_HeliosRtcEngine_nativeDestroyEngine(JNIEnv* env, jobject t
 
 // Join Channel
 JNIEXPORT jint JNICALL
-Java_com_tasawwur_rtc_HeliosRtcEngine_nativeJoinChannel(JNIEnv* env, jobject thiz, 
+Java_com_tasawwur_rtc_TasawwurRtcEngine_nativeJoinChannel(JNIEnv* env, jobject thiz, 
                                                         jlong handle, jstring token, 
                                                         jstring channel_name, jstring user_id) {
     LOGD("Join channel called for handle: %lld", handle);
@@ -281,7 +281,7 @@ Java_com_tasawwur_rtc_HeliosRtcEngine_nativeJoinChannel(JNIEnv* env, jobject thi
 
 // Leave Channel
 JNIEXPORT jint JNICALL
-Java_com_tasawwur_rtc_HeliosRtcEngine_nativeLeaveChannel(JNIEnv* env, jobject thiz, jlong handle) {
+Java_com_tasawwur_rtc_TasawwurRtcEngine_nativeLeaveChannel(JNIEnv* env, jobject thiz, jlong handle) {
     LOGD("Leave channel called for handle: %lld", handle);
     
     auto engine = get_engine(handle);
@@ -295,7 +295,7 @@ Java_com_tasawwur_rtc_HeliosRtcEngine_nativeLeaveChannel(JNIEnv* env, jobject th
 
 // Setup Local Video
 JNIEXPORT void JNICALL
-Java_com_tasawwur_rtc_HeliosRtcEngine_nativeSetupLocalVideo(JNIEnv* env, jobject thiz, 
+Java_com_tasawwur_rtc_TasawwurRtcEngine_nativeSetupLocalVideo(JNIEnv* env, jobject thiz, 
                                                             jlong handle, jobject surface_view) {
     LOGD("Setup local video called for handle: %lld", handle);
     
@@ -310,7 +310,7 @@ Java_com_tasawwur_rtc_HeliosRtcEngine_nativeSetupLocalVideo(JNIEnv* env, jobject
 
 // Setup Remote Video
 JNIEXPORT void JNICALL
-Java_com_tasawwur_rtc_HeliosRtcEngine_nativeSetupRemoteVideo(JNIEnv* env, jobject thiz, 
+Java_com_tasawwur_rtc_TasawwurRtcEngine_nativeSetupRemoteVideo(JNIEnv* env, jobject thiz, 
                                                              jlong handle, jobject surface_view, 
                                                              jstring user_id) {
     LOGD("Setup remote video called for handle: %lld", handle);
@@ -327,7 +327,7 @@ Java_com_tasawwur_rtc_HeliosRtcEngine_nativeSetupRemoteVideo(JNIEnv* env, jobjec
 
 // Mute Local Audio
 JNIEXPORT void JNICALL
-Java_com_tasawwur_rtc_HeliosRtcEngine_nativeMuteLocalAudio(JNIEnv* env, jobject thiz, 
+Java_com_tasawwur_rtc_TasawwurRtcEngine_nativeMuteLocalAudio(JNIEnv* env, jobject thiz, 
                                                            jlong handle, jboolean muted) {
     LOGD("Mute local audio called for handle: %lld, muted: %s", handle, muted ? "true" : "false");
     
@@ -342,7 +342,7 @@ Java_com_tasawwur_rtc_HeliosRtcEngine_nativeMuteLocalAudio(JNIEnv* env, jobject 
 
 // Enable Local Video
 JNIEXPORT void JNICALL
-Java_com_tasawwur_rtc_HeliosRtcEngine_nativeEnableLocalVideo(JNIEnv* env, jobject thiz, 
+Java_com_tasawwur_rtc_TasawwurRtcEngine_nativeEnableLocalVideo(JNIEnv* env, jobject thiz, 
                                                              jlong handle, jboolean enabled) {
     LOGD("Enable local video called for handle: %lld, enabled: %s", handle, enabled ? "true" : "false");
     
@@ -356,3 +356,4 @@ Java_com_tasawwur_rtc_HeliosRtcEngine_nativeEnableLocalVideo(JNIEnv* env, jobjec
 }
 
 } // extern "C"
+

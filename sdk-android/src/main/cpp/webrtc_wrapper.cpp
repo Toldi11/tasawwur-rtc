@@ -353,3 +353,4 @@ void WebRTCWrapper::GetStats(std::function<void(const std::string&)> callback) {
 bool WebRTCWrapper::IsConnected() const {
     return impl_->IsConnected();
 }
+

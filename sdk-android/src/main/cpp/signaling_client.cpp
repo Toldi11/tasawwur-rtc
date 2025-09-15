@@ -48,3 +48,4 @@ private:
     std::string server_url_;
     bool connected_ = false;
 };
+

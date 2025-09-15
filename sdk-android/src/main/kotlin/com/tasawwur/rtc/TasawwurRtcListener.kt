@@ -1,13 +1,13 @@
 package com.tasawwur.rtc
 
 /**
- * Interface for receiving RTC events from the HeliosRtcEngine.
+ * Interface for receiving RTC events from the TasawwurRtcEngine.
  * 
  * All callbacks are executed on the main thread.
  * 
  * ## Usage Example
  * ```kotlin
- * engine.setListener(object : HeliosRtcListener {
+ * engine.setListener(object : TasawwurRtcListener {
  *     override fun onUserJoined(userId: String) {
  *         // Setup remote video view for the new user
  *         engine.setupRemoteVideo(remoteVideoView, userId)
@@ -30,7 +30,7 @@ package com.tasawwur.rtc
  * })
  * ```
  */
-interface HeliosRtcListener {
+interface TasawwurRtcListener {
     
     /**
      * Called when a remote user joins the channel.
@@ -366,3 +366,4 @@ enum class NetworkQuality(val nativeValue: Int) {
         }
     }
 }
+

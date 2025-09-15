@@ -26,3 +26,4 @@ void LogMessage(LogLevel level, const char* file, int line, const char* format, 
 #define LOG_ERROR(...) tasawwur::LogMessage(tasawwur::LogLevel::ERROR, __FILE__, __LINE__, __VA_ARGS__)
 
 #endif // TASAWWUR_LOGGING_H
+

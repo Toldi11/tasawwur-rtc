@@ -225,3 +225,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
            "u.createdAt < :cutoffDate")
     int deleteInactiveUsersWithoutProjects(@Param("cutoffDate") Instant cutoffDate);
 }
+

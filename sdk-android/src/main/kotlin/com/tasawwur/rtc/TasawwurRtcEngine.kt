@@ -13,13 +13,13 @@ import timber.log.Timber
  * 
  * ## Usage Example
  * ```kotlin
- * val config = HeliosRtcConfig.Builder()
+ * val config = TasawwurRtcConfig.Builder()
  *     .setAppId("your-app-id")
  *     .setEnvironment(Environment.PRODUCTION)
  *     .build()
  * 
- * val engine = HeliosRtcEngine.create(context, config)
- * engine.setListener(object : HeliosRtcListener {
+ * val engine = TasawwurRtcEngine.create(context, config)
+ * engine.setListener(object : TasawwurRtcListener {
  *     override fun onUserJoined(userId: String) {
  *         // Handle user joined
  *     }
@@ -29,17 +29,17 @@ import timber.log.Timber
  * engine.joinChannel(token, "my-channel", "user-123")
  * ```
  * 
- * @see HeliosRtcConfig
- * @see HeliosRtcListener
+ * @see TasawwurRtcConfig
+ * @see TasawwurRtcListener
  */
-class HeliosRtcEngine private constructor(
+class TasawwurRtcEngine private constructor(
     private val context: Context,
-    private val config: HeliosRtcConfig
+    private val config: TasawwurRtcConfig
 ) {
     
     private val engineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var nativeEngineHandle: Long = 0L
-    private var listener: HeliosRtcListener? = null
+    private var listener: TasawwurRtcListener? = null
     private var currentChannel: String? = null
     private var currentUserId: String? = null
     private var isDestroyed = false
@@ -59,7 +59,7 @@ class HeliosRtcEngine private constructor(
             throw RuntimeException("Failed to initialize native RTC engine")
         }
         
-        Timber.d("HeliosRtcEngine initialized with handle: $nativeEngineHandle")
+        Timber.d("TasawwurRtcEngine initialized with handle: $nativeEngineHandle")
     }
     
     /**
@@ -67,7 +67,7 @@ class HeliosRtcEngine private constructor(
      * 
      * @param listener The listener to receive RTC events, or null to remove the current listener
      */
-    fun setListener(listener: HeliosRtcListener?) {
+    fun setListener(listener: TasawwurRtcListener?) {
         this.listener = listener
     }
     
@@ -210,7 +210,7 @@ class HeliosRtcEngine private constructor(
             return
         }
         
-        Timber.d("Destroying HeliosRtcEngine")
+        Timber.d("Destroying TasawwurRtcEngine")
         
         // Cancel all coroutines
         engineScope.cancel()
@@ -231,7 +231,7 @@ class HeliosRtcEngine private constructor(
         listener = null
         isDestroyed = true
         
-        Timber.i("HeliosRtcEngine destroyed")
+        Timber.i("TasawwurRtcEngine destroyed")
     }
     
     /**
@@ -334,16 +334,16 @@ class HeliosRtcEngine private constructor(
         }
         
         /**
-         * Creates a new instance of HeliosRtcEngine.
+         * Creates a new instance of TasawwurRtcEngine.
          * 
          * @param context Android application context
          * @param config Configuration for the RTC engine
-         * @return A new HeliosRtcEngine instance
+         * @return A new TasawwurRtcEngine instance
          * @throws RuntimeException if engine creation fails
          */
         @JvmStatic
-        fun create(context: Context, config: HeliosRtcConfig): HeliosRtcEngine {
-            return HeliosRtcEngine(context.applicationContext, config)
+        fun create(context: Context, config: TasawwurRtcConfig): TasawwurRtcEngine {
+            return TasawwurRtcEngine(context.applicationContext, config)
         }
         
         /**
@@ -355,3 +355,4 @@ class HeliosRtcEngine private constructor(
         fun getSdkVersion(): String = "1.0.0"
     }
 }
+

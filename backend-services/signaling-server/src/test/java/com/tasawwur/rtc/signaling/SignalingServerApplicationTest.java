@@ -17,3 +17,4 @@ class SignalingServerApplicationTest {
         // with all beans and configurations properly initialized
     }
 }
+

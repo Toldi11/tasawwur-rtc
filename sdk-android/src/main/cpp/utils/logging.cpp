@@ -64,3 +64,4 @@ void LogMessage(LogLevel level, const char* file, int line, const char* format, 
 }
 
 } // namespace tasawwur
+

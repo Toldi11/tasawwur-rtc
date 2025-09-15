@@ -76,7 +76,7 @@ Create your main activity with video calling functionality:
 
 ```kotlin
 class MainActivity : AppCompatActivity() {
-    private lateinit var rtcEngine: HeliosRtcEngine
+    private lateinit var rtcEngine: TasawwurRtcEngine
     private lateinit var localVideoView: SurfaceView
     private lateinit var remoteVideoView: SurfaceView
     
@@ -96,16 +96,16 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun initializeRTC() {
-        val config = HeliosRtcConfig.Builder()
+        val config = TasawwurRtcConfig.Builder()
             .setAppId(APP_ID)
             .setEnvironment(Environment.PRODUCTION)
             .setLogLevel(LogLevel.INFO)
             .build()
         
-        rtcEngine = HeliosRtcEngine.create(this, config)
+        rtcEngine = TasawwurRtcEngine.create(this, config)
         
         // Set up event listener
-        rtcEngine.setListener(object : HeliosRtcListener {
+        rtcEngine.setListener(object : TasawwurRtcListener {
             override fun onUserJoined(userId: String) {
                 runOnUiThread {
                     // Setup remote video when user joins
@@ -292,3 +292,4 @@ Your integration should now deliver:
 - Check out our [**Examples**](./examples) for more code samples
 - Visit our [**Community Forum**](https://community.tasawwur-rtc.com) for questions
 - Contact [**Support**](mailto:support@tasawwur-rtc.com) for technical assistance
+
